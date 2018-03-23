@@ -50,4 +50,6 @@ public interface SchoolMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(School record);
+
+    School findBySchoolName(String schoolName);
 }

@@ -1,13 +1,16 @@
 package system.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Device implements Serializable {
     private Integer id;
-
+    @NotBlank
     private Integer groupId;
-
+    @NotBlank
     private String deviceName;
 
     private String deviceCode;

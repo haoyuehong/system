@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import system.common.JsonData;
+import system.dao.AreaMapper;
 import system.dao.DeviceMapper;
+import system.dao.SchoolMapper;
 import system.model.Device;
 import system.param.DeviceListParam;
 import system.param.PageParam;
@@ -28,6 +30,10 @@ import java.util.*;
 public class DeviceService {
     @Autowired
     private DeviceMapper deviceMapper;
+    @Autowired
+    private AreaMapper areaMapper;
+    @Autowired
+    private SchoolMapper schoolMapper;
 
     /**
      * 添加或修改设备
@@ -88,6 +94,16 @@ public class DeviceService {
                         Map jsonMap = jsonData.toMap();
                         Integer status = (Integer) jsonMap.get("status");
                         if(status == 0){
+                            //根据地区名或学校名查询地区id或学校id
+                            String blo_school = value.get(5);
+                            if(blo_school.replace(" ","").equals("是")){
+                                String schoolCode = schoolMapper.findBySchoolName(value.get(0).replace(" ", "")).getSchoolCode();
+                                device.setGroupId(Integer.parseInt(schoolCode));
+                            }else{
+                                Integer areaId = areaMapper.findByAreaName(value.get(0).replace(" ","")).getAreaid();
+                                device.setGroupId(areaId);
+                            }
+
                             //设备名
                            if(StringUtils.isNotBlank(value.get(1))){
                                device.setDeviceName(value.get(1).replace(" ",""));
@@ -117,9 +133,9 @@ public class DeviceService {
                                 }
                             }
                             device.setBuildTime(new Date());
-                            String s = value.get(5);
+                            String s = value.get(4);
                             if(StringUtils.isNotBlank(s)){
-                                if(s.equals("是")){
+                                if(s.replace(" ","").equals("是")){
                                     device.setDeviceMap((byte) 1);
                                 }else{
                                     device.setDeviceMap((byte)0);

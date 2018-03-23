@@ -111,4 +111,10 @@
       area_id = #{areaId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findBySchoolName" resultType="system.model.School">
+    SELECT  <include refid="Base_Column_List" />
+    FROM school
+    WHERE school_name = #{schoolName}
+  </select>
 </mapper>

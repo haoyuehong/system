@@ -122,4 +122,10 @@
       parentid = #{parentid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findByAreaName" resultType="system.model.Area">
+    SELECT  <include refid="Base_Column_List" />
+    FROM area
+    WHERE area = #{areaName}
+  </select>
 </mapper>

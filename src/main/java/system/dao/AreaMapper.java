@@ -50,4 +50,6 @@ public interface AreaMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Area record);
+
+    Area findByAreaName(String areaName);
 }
