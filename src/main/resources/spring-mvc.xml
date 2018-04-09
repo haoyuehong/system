@@ -8,10 +8,10 @@
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-    <!--开启上下文注解-->
-    <context:annotation-config/>
-    <!--启动注解驱动的springmvc功能-->
+    <!-- 处理器 映射器  适配器 -->
     <mvc:annotation-driven/>
+    <!-- 静态资源 -->
+    <mvc:default-servlet-handler />
     <!--http请求监听-->
     <mvc:interceptors>
         <bean class="system.common.HttpInterceptor"/>
@@ -19,8 +19,11 @@
     <!--启动包扫面功能-->
     <context:component-scan base-package="system.controller"/>
     <context:component-scan base-package="system.dao"/>
+    <context:component-scan base-package="system.Service"/>
+
     <!--自定义全局异常类-->
     <bean class="system.common.SpringExceptionResolver" />
+
     <!--json格式数据的请求处理方式-->
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />

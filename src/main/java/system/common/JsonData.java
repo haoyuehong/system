@@ -1,6 +1,8 @@
 package system.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -11,6 +13,8 @@ import java.util.Map;
  * @Description:
  * @Date: create in 8:33 2018/3/14
  */
+@Getter
+@Setter
 public class JsonData<T> implements Serializable {
 
     private int status;

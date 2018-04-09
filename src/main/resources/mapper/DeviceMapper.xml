@@ -160,19 +160,59 @@
   </update>
 
   <select id="findList" parameterType="system.model.Device" resultMap="BaseResultMap">
-    SELECT <include refid="Base_Column_List" />
+    <if test="deviceListParam != null">
+      SELECT <include refid="Base_Column_List" />
+      FROM device
+      WHERE 1=1
+      <if test="deviceListParam.groupId != null">
+        AND group_id = #{deviceListParam.groupId}
+      </if>
+
+      <if test="deviceListParam.deviceName != null and deviceListParam.deviceName != '' ">
+        AND device_name LIKE CONCAT ("%",#{deviceListParam.deviceName},"%")
+      </if>
+
+      <if test="deviceListParam.deviceAddress != null and deviceListParam.deviceAddress != '' ">
+        AND device_address LIKE CONCAT ("%",#{deviceListParam.deviceAddress},"%")
+      </if>
+    </if>
+  </select>
+
+
+  <select id="findByGroupIds" parameterType="system.model.Device" resultMap="BaseResultMap">
+    <if test="sonAreaIds != null and sonAreaIds.size()>0">
+      SELECT <include refid="Base_Column_List" />
+      FROM device
+      WHERE group_id IN
+      <foreach collection="sonAreaIds" open="(" separator="," close=")" item="item">
+        #{item}
+      </foreach>
+
+      <if test="deviceListParam != null">
+        <if test="deviceListParam.deviceName != null and deviceListParam.deviceName != '' ">
+          AND device_name LIKE CONCAT ("%",#{deviceListParam.deviceName},"%")
+        </if>
+
+        <if test="deviceListParam.deviceAddress != null and deviceListParam.deviceAddress != '' ">
+          AND device_address LIKE CONCAT ("%",#{deviceListParam.deviceAddress},"%")
+        </if>
+      </if>
+
+    </if>
+  </select>
+
+  <select id="countNumByAreaIds" resultType="int">
+    SELECT count(1)
     FROM device
-    WHERE 1=1
-    <if test="areaId != null">
-      AND group_id = #{groupId}
-    </if>
+    WHERE group_id IN
+    <foreach collection="areaIds" open="(" separator="," close=")" item="item">
+      #{item}
+    </foreach>
+  </select>
 
-    <if test="deviceName != null and deviceName != '' ">
-      AND device_name LIKE CONCAT ("%",#{deviceName},"%")
-    </if>
-
-    <if test="deviceAddress != null and deviceAddress != '' ">
-      AND device_address LIKE CONCAT ("%",#{deviceAddress},"%")
-    </if>
+  <select id="countNumBySchoolCodes" resultType="system.dto.DeviceNumCount">
+    SELECT s.name AS areaName, count(d.id) AS  deviceNum
+    FROM device d, school s
+    WHERE d.group_id  = s.school_code AND s.school_code = #{schoolCode}
   </select>
 </mapper>

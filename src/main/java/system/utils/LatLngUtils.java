@@ -74,9 +74,9 @@ public class LatLngUtils {
         return JsonData.createSuccess("获取成功",map);
     }
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         String str = "您 好   ";
         System.out.println(str.replace(" ",""));
 
-    }
+    }*/
 }

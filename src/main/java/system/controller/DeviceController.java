@@ -1,5 +1,7 @@
 package system.controller;
 
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,13 +9,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import system.Service.DeviceService;
 import system.common.JsonData;
+import system.dto.DeviceNumCount;
 import system.model.Device;
+import system.param.DeviceListParam;
 import system.utils.BeanValidator;
+import system.utils.CodeGetter;
 import system.utils.LatLngUtils;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,7 +30,7 @@ import java.util.Map;
 @RequestMapping("/sys/device")
 public class DeviceController {
 
-    @Resource
+    @Autowired
     private DeviceService deviceService;
 
     /**
@@ -33,41 +38,58 @@ public class DeviceController {
      * @param device 设备信息
      * @return
      */
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save.do",method = RequestMethod.POST)
     @ResponseBody
     public JsonData save(Device device){
+        BeanValidator.check(device);
         device.setBuildTime(new Date());
         JsonData jsonData = LatLngUtils.getLatAndLngByAddress(device.getDeviceAddress());
-        Map map = jsonData.toMap();
-        if((Integer)map.get("status")  == 0){
-            Map<String, BigDecimal> data = (Map<String, BigDecimal>) map.get("data");
-            BigDecimal lng = data.get("lng");
+
+        if(jsonData.getStatus()  == 1){
+            Map<String,BigDecimal> map = (Map<String,BigDecimal>)jsonData.getData();
+            BigDecimal lng = map.get("lng");
+            BigDecimal lat = map.get("lat");
+            device.setDeviceLatitude(lng+","+lat);
         }
-        device.setDeviceLatitude();
-        BeanValidator.check(device);
+        device.setDeviceCode(CodeGetter.codeGet());
         deviceService.add(device);
-        return JsonData.createError("添加成功");
+        return JsonData.createSuccess("添加成功");
     }
 
     /**
      * 删除设备
      */
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}.do",method = RequestMethod.DELETE)
     @ResponseBody
-    public JsonData delete(@PathVariable(value = "id")Integer id){
+    public JsonData delete(@PathVariable("id") Integer id){
         deviceService.delete(id);
-        return JsonData.createError("删除成功");
+        return JsonData.createSuccess("删除成功");
     }
 
     /**
      * 查询设备
      */
-    @RequestMapping("/list")
+    @RequestMapping("/list.do")
     @ResponseBody
-    public JsonData list(){
-
+    public JsonData list(DeviceListParam param){
+        BeanValidator.check(param);
+        PageInfo<Device> pageInfo = deviceService.getAll(param);
+        return JsonData.createSuccess(pageInfo);
     }
 
+    /**
+     * 根据地区id获取设备数量排名
+     */
+    @RequestMapping("/deviceNumRang.do")
+    @ResponseBody
+    public JsonData deviceNumRang(Integer areaId){
+        List<DeviceNumCount> deviceNumCounts = deviceService.deviceNumRang(areaId);
+        return JsonData.createSuccess(deviceNumCounts);
+    }
+
+    /**
+     * 根据地区id或学校id查询设备位置返回设备所在位置经纬度
+     */
 
 
 

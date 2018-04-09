@@ -36,7 +36,7 @@
 
     <!--指定dao位置-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.hz1202.dao"/>
+        <property name="basePackage" value="system.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

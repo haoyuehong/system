@@ -1,6 +1,9 @@
 package system.dao;
 
+import org.apache.ibatis.annotations.Param;
 import system.model.Area;
+
+import java.util.List;
 
 public interface AreaMapper {
     /**
@@ -51,5 +54,20 @@ public interface AreaMapper {
      */
     int updateByPrimaryKey(Area record);
 
-    Area findByAreaName(String areaName);
+    Area findByAreaName(@Param("areaName")String areaName);
+
+    /**
+     * 查询全部子地区
+     */
+    List<Integer> findSonArea(@Param("areaId") Integer areaId);
+
+    /**
+     * 查询子地区（一级）
+     */
+    List<Area> findByParentId(@Param("areaId")Integer areaId);
+
+    /**
+     * 根据地区id查询地区
+     */
+    Area findByAreaId(@Param("areaId")Integer areaId);
 }

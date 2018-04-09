@@ -128,4 +128,28 @@
     FROM area
     WHERE area = #{areaName}
   </select>
+
+  <select id="findSonArea" resultType="int">
+		  SELECT
+				area.areaid
+			FROM
+				area
+			WHERE
+				FIND_IN_SET(
+					area.areaid,
+					getChildrenOrg (#{areaId})
+				)
+  </select>
+
+  <select id="findByParentId" resultType="system.model.Area">
+    SELECT  <include refid="Base_Column_List" />
+    FROM area
+    WHERE parentid = #{areaId}
+  </select>
+
+  <select id="findByAreaId" resultType="system.model.Area">
+    SELECT  <include refid="Base_Column_List" />
+    FROM area
+    WHERE areaid = #{areaId}
+  </select>
 </mapper>

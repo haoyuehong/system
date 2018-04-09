@@ -8,19 +8,19 @@ import java.util.Date;
 
 public class Device implements Serializable {
     private Integer id;
-    @NotBlank
+
+    @NotNull
     private Integer groupId;
     @NotBlank
     private String deviceName;
 
     private String deviceCode;
-
+    @NotBlank
     private String deviceAddress;
 
     private String deviceLatitude;
 
     private Date buildTime;
-
     private Byte deviceMap;
 
     private static final long serialVersionUID = 1L;

@@ -171,4 +171,23 @@
       last_upload_time = #{lastUploadTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--根据设备码查询设备运行情况-->
+  <select id="findByDeviceCode" resultType="system.dto.DeviceFunctionVO">
+    SELECT d.device_name AS  deviceName, d.device_address AS deviceAddress,
+           d.build_time AS buildTime,df.real_num AS realNum, df.hstory_num AS hstoryNum,
+           df.cur_num AS curNum,df.on_time AS onTime,df.this_duration AS thisDuration,
+           df.total_duration AS totalDuration, df.last_upload_time AS lastUploadTime
+    FROM device_function df, device d
+    WHERE df.device_code = d.device_code AND d.device_code = #{deviceCode}
+  </select>
+
+  <!--根据学校代码统计设备运行情况-->
+  <select id="deviceFunctionCountBySchoolCode" resultType="system.dto.DeviceFunctionVO">
+    SELECT  d.device_name AS  deviceName, df.hstory_num AS hstoryNum,
+            df.total_duration AS totalDuration
+    FROM device_function df, device d,school s
+    WHERE df.device_code = d.device_code AND s.school_code = d.group_id AND s.school_code = #{groupId}
+  </select>
+
 </mapper>

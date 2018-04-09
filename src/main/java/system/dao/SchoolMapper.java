@@ -1,6 +1,9 @@
 package system.dao;
 
+import org.apache.ibatis.annotations.Param;
 import system.model.School;
+
+import java.util.List;
 
 public interface SchoolMapper {
     /**
@@ -51,5 +54,9 @@ public interface SchoolMapper {
      */
     int updateByPrimaryKey(School record);
 
-    School findBySchoolName(String schoolName);
+    School findBySchoolName(@Param("schoolName") String schoolName);
+
+    List<Integer> findByAreaIds(@Param("areaIds") List<Integer> areaIds);
+
+    List<School> findByAreaId(@Param("areaId")Integer areaId);
 }

@@ -3,19 +3,11 @@ package system.param;
 /**
  * @Author: mol
  * @Description:
- * @Date: create in 10:59 2018/3/14
+ * @Date: create in 9:55 2018/3/26
  */
-public class PageParam {
-
-    /**
-     * 当前页，默认为第一页
-     */
+public class PageNo {
     private Integer page = 1;
-
-    /**
-     * 页大小，默认为10
-     */
-    private Integer rows;
+    private Integer rows = 10;
 
     public Integer getPage() {
         return page;

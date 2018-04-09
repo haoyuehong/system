@@ -117,4 +117,20 @@
     FROM school
     WHERE school_name = #{schoolName}
   </select>
+
+  <select id="findByAreaIds" resultType="int">
+    <if test="areaIds != null and areaIds.size()>0"></if>
+      SELECT id
+      FROM school
+      WHERE area_id IN
+      <foreach collection="areaIds" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+  </select>
+
+  <select id="findByAreaId" resultType="system.model.School">
+    SELECT <include refid="Base_Column_List" />
+    FROM school
+    WHERE area_id = #{areaId}
+  </select>
 </mapper>

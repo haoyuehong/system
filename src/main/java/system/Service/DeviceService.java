@@ -2,6 +2,7 @@ package system.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,12 @@ import system.common.JsonData;
 import system.dao.AreaMapper;
 import system.dao.DeviceMapper;
 import system.dao.SchoolMapper;
+import system.dto.DeviceNumCount;
+import system.enums.BuildAreaEnum;
+import system.model.Area;
 import system.model.Device;
+import system.model.School;
 import system.param.DeviceListParam;
-import system.param.PageParam;
 import system.utils.CodeGetter;
 import system.utils.ExcelUtil;
 import system.utils.LatLngUtils;
@@ -25,8 +29,9 @@ import java.util.*;
  * @Description:
  * @Date: create in 10:56 2018/3/14
  */
-@Service
+
 @Slf4j
+@Service
 public class DeviceService {
     @Autowired
     private DeviceMapper deviceMapper;
@@ -34,6 +39,8 @@ public class DeviceService {
     private AreaMapper areaMapper;
     @Autowired
     private SchoolMapper schoolMapper;
+    @Autowired
+    private AreaService areaService;
 
     /**
      * 添加或修改设备
@@ -49,9 +56,23 @@ public class DeviceService {
     /**
      *获取设备列表
      */
-    public PageInfo<Device> getAll(PageParam pageParam,DeviceListParam deviceListParam){
-        PageHelper.startPage(pageParam.getPage(),pageParam.getRows());
-        List< Device> deviceList = deviceMapper.findList(deviceListParam);
+    public PageInfo<Device> getAll(DeviceListParam deviceListParam){
+        PageHelper.startPage(deviceListParam.getPage(),deviceListParam.getRows());
+        List< Device> deviceList;
+        if(deviceListParam.getBuildArea().equals(BuildAreaEnum.SCHOOL.getType())){
+            deviceList = deviceMapper.findList(deviceListParam);
+        }else{
+            Integer groupId = deviceListParam.getGroupId();
+            /*//查询该地区的子地区id和学校id
+            List<Integer> sonAreaIds = areaMapper.findSonArea(groupId);
+            sonAreaIds.add(groupId);
+            //根据地区id查询管辖学校
+            List<Integer> schoolIds = schoolMapper.findByAreaIds(sonAreaIds);
+            sonAreaIds.addAll(schoolIds);*/
+            List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+            deviceList = deviceMapper.findByGroupIds(deviceListParam,sonAreaIds);
+        }
+
         return new PageInfo<>(deviceList);
     }
 
@@ -178,6 +199,56 @@ public class DeviceService {
             return false;
         }
     }
+
+    public List<DeviceNumCount> deviceNumRang(Integer areaId){
+        List<DeviceNumCount> list = Lists.newArrayList();
+        Area area = areaService.findByAreaId(areaId);
+        if(area.getArealevel() > 3){
+            //根据地区id查询其子地区
+            List<Area> areaList = areaService.findSonAreaByAreaId(areaId);
+            for(Area sonArea : areaList){
+                //根据地区id统计设备数量
+                Integer deviceNum = countDeviceNum(sonArea.getId());
+                if(deviceNum>0){
+                    DeviceNumCount deviceNumCount = new DeviceNumCount();
+                    deviceNumCount.setAreaName(sonArea.getArea());
+                    deviceNumCount.setDeviceNum(deviceNum);
+                    list.add(deviceNumCount);
+                }
+            }
+        }else{
+            List<School> schools = schoolMapper.findByAreaId(areaId);
+            for(School school : schools){
+                DeviceNumCount deviceNumCount = deviceMapper.countNumBySchoolCodes(school.getSchoolCode());
+                list.add(deviceNumCount);
+            }
+        }
+        //排序
+        Collections.sort(list, new Comparator<DeviceNumCount>() {
+            @Override
+            public int compare(DeviceNumCount o1, DeviceNumCount o2) {
+                return o2.getDeviceNum() - o1.getDeviceNum();
+            }
+        });
+        return list;
+    }
+
+    /**
+     * 根据地区id查询设备数量
+     * @param groupId
+     * @return
+     */
+    public Integer countDeviceNum(Integer groupId){
+        //根据地区id查询其子地区及学校
+        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+        //统计这些学校的设备
+        if(sonAreaIds.size()>0){
+            return deviceMapper.countNumByAreaIds(sonAreaIds);
+        }else{
+            return 0;
+        }
+    }
+
 
 
 

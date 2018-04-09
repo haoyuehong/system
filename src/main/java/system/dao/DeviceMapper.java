@@ -1,5 +1,7 @@
 package system.dao;
 
+import org.apache.ibatis.annotations.Param;
+import system.dto.DeviceNumCount;
 import system.model.Device;
 import system.param.DeviceListParam;
 
@@ -55,7 +57,22 @@ public interface DeviceMapper {
     int updateByPrimaryKey(Device record);
 
     /**
-     * 获取设备列表
+     * 获取设备列表（学校）
      */
-    List<Device> findList(DeviceListParam deviceListParam);
+    List<Device> findList(@Param("deviceListParam") DeviceListParam deviceListParam);
+
+    /**
+     * 获取设备列表（地区）
+     */
+    List<Device> findByGroupIds(@Param("deviceListParam")DeviceListParam deviceListParam,@Param("sonAreaIds")List<Integer> sonAreaIds);
+
+    /**
+     * 根据地区id统计设备数量
+     */
+    Integer countNumByAreaIds(@Param("areaIds")List<Integer> areaIds);
+
+    /**
+     * 根据学校id查询设备数量
+     */
+    DeviceNumCount countNumBySchoolCodes(@Param("schoolCode")String schoolCode);
 }

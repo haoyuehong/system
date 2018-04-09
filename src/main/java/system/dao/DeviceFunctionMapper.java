@@ -1,6 +1,10 @@
 package system.dao;
 
+import org.apache.ibatis.annotations.Param;
+import system.dto.DeviceFunctionVO;
 import system.model.DeviceFunction;
+
+import java.util.List;
 
 public interface DeviceFunctionMapper {
     /**
@@ -50,4 +54,19 @@ public interface DeviceFunctionMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(DeviceFunction record);
+
+    /**
+     *根据设备码查询设备运行情况
+     */
+    DeviceFunctionVO findByDeviceCode(@Param("deviceCode")String deviceCode);
+
+    /**
+     * 根据学校代码统计各个设备运行情况
+     */
+    List<DeviceFunctionVO> deviceFunctionCountBySchoolCode(@Param("groupId") String groupId );
+
+    /**
+     * 根据地区id获取当地设备的运行状态
+     */
+    List<DeviceFunctionVO> deviceFunctionCountByAreaId(@Param("groupId")Integer groupId);
 }

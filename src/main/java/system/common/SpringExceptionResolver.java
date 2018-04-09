@@ -20,7 +20,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver {
         String defaultMsg = "System error";
         //定义文本请求和页面请求
         //json请求
-        if(url.endsWith(".json")){
+        if(url.endsWith(".do")){
             //判断是否是我们自定义的异常
             if(e instanceof SystemException){
                 //创建异常返回信息
@@ -32,7 +32,7 @@ public class SpringExceptionResolver implements HandlerExceptionResolver {
                 JsonData jsonData = JsonData.createError(defaultMsg);
                 mv = new ModelAndView("jsonView",jsonData.toMap());
             }
-        }else if(url.endsWith(".page")){
+        }else if(url.endsWith(".html")){
             //页面请求
             log.error("unkwon page exception={},url={},",e,url);
             JsonData jsonData = JsonData.createError(defaultMsg);
