@@ -122,4 +122,14 @@
       image_type = #{imageType,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="findBydeviceCode" resultType="system.model.DeviceImage" parameterType="map">
+    SELECT <include refid="Base_Column_List" />
+    FROM device_image
+    WHERE 1=1
+    <if test="deviceCode != null">
+      AND device_code = #{deviceCode}
+    </if>
+    <if test=""></if>
+  </select>
 </mapper>

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import system.dao.DeviceImageMapper;
 import system.model.DeviceImage;
 
+import java.util.List;
+
 /**
  * @Author: mol
  * @Description:
@@ -18,5 +20,9 @@ public class DeviceImageService {
 
     public void save(DeviceImage deviceImage){
         imageMapper.insertSelective(deviceImage);
+    }
+
+    public List<DeviceImage> findBydeviceCode(Integer deviceCode,Integer imageType){
+        return imageMapper.findBydeviceCode(deviceCode,imageType);
     }
 }

@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import system.Service.DeviceFunctionService;
+import system.Service.DeviceImageService;
 import system.Service.DeviceService;
 import system.common.JsonData;
 import system.dto.DeviceNumCount;
 import system.dto.DevicePositionVO;
 import system.model.Device;
+import system.model.DeviceImage;
 import system.param.DeviceParam;
 import system.utils.BeanValidator;
 import system.utils.CodeGetter;
@@ -33,6 +36,8 @@ public class DeviceController {
 
     @Autowired
     private DeviceService deviceService;
+    @Autowired
+    private DeviceImageService deviceImageService;
 
     /**
      * 新增或保存编辑设备
@@ -96,6 +101,16 @@ public class DeviceController {
     public JsonData position(Integer areaId){
         List<DevicePositionVO> position = deviceService.position(areaId);
         return JsonData.createSuccess(position);
+    }
+
+    /**
+     * 根据设备码和图片类型获取设备图片
+     */
+    @RequestMapping("/devImage")
+    @ResponseBody
+    public JsonData image(Integer deviceCode,Integer imageType){
+        List<DeviceImage> deviceImages = deviceImageService.findBydeviceCode(deviceCode,imageType);
+        return JsonData.createSuccess(deviceImages);
     }
 
 
