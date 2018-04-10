@@ -59,4 +59,6 @@ public interface SchoolMapper {
     List<Integer> findByAreaIds(@Param("areaIds") List<Integer> areaIds);
 
     List<School> findByAreaId(@Param("areaId")Integer areaId);
+
+    School findBySchoolCode(@Param("schoolCode")Integer schoolCode);
 }

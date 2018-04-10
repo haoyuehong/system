@@ -215,4 +215,19 @@
     FROM device d, school s
     WHERE d.group_id  = s.school_code AND s.school_code = #{schoolCode}
   </select>
+
+  <select id="findPositionByGroupIds" resultType="system.dto.DevicePositionVO">
+    SELECT device_code AS deviceCode,device_latitude AS lnglat
+    FROM device
+    WHERE group_id IN
+    <foreach collection="groupIds" open="(" separator="," close=")" item="item">
+      #{item}
+    </foreach>
+  </select>
+
+  <select id="findByGroupId" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" />
+    FROM device
+    WHERE group_id = #{groupId}
+  </select>
 </mapper>

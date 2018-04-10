@@ -2,6 +2,7 @@ package system.dao;
 
 import org.apache.ibatis.annotations.Param;
 import system.dto.DeviceNumCount;
+import system.dto.DevicePositionVO;
 import system.model.Device;
 import system.param.DeviceListParam;
 
@@ -75,4 +76,14 @@ public interface DeviceMapper {
      * 根据学校id查询设备数量
      */
     DeviceNumCount countNumBySchoolCodes(@Param("schoolCode")String schoolCode);
+
+    /**
+     * 根据安装groupId查询设备
+     */
+    List<DevicePositionVO> findPositionByGroupIds(@Param("groupIds")List<Integer> groupIds);
+
+    /**
+     * 根据groupId查询设备
+     */
+    List<Device> findByGroupId(@Param("groupId") Integer groupId);
 }

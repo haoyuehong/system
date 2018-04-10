@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import system.Service.DeviceService;
 import system.common.JsonData;
 import system.dto.DeviceNumCount;
+import system.dto.DevicePositionVO;
 import system.model.Device;
 import system.param.DeviceListParam;
 import system.utils.BeanValidator;
@@ -90,6 +91,15 @@ public class DeviceController {
     /**
      * 根据地区id或学校id查询设备位置返回设备所在位置经纬度
      */
+    @RequestMapping("/position.do")
+    @ResponseBody
+    public JsonData position(Integer areaId){
+        List<DevicePositionVO> position = deviceService.position(areaId);
+        return JsonData.createSuccess(position);
+    }
+
+
+
 
 
 

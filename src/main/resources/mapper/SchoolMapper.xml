@@ -133,4 +133,10 @@
     FROM school
     WHERE area_id = #{areaId}
   </select>
+
+  <select id="findBySchoolCode" resultType="system.model.School">
+    SELECT <include refid="Base_Column_List" />
+    FROM school
+    WHERE school_code = #{schoolCode}
+  </select>
 </mapper>

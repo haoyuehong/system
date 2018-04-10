@@ -180,6 +180,7 @@
            df.total_duration AS totalDuration, df.last_upload_time AS lastUploadTime
     FROM device_function df, device d
     WHERE df.device_code = d.device_code AND d.device_code = #{deviceCode}
+    ORDER BY  totalDuration DESC,hstoryNum DESC
   </select>
 
   <!--根据学校代码统计设备运行情况-->

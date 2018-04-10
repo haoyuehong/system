@@ -3,10 +3,16 @@ package system.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import system.Service.AreaService;
 import system.Service.DeviceFunctionService;
+import system.Service.DeviceService;
 import system.common.JsonData;
+import system.dto.DeviceFunctionBase;
 import system.dto.DeviceFunctionVO;
+import system.dto.SiteVO;
+import system.model.Device;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +26,10 @@ public class DeviceCountController {
 
     @Autowired
     private DeviceFunctionService functionService;
+    @Autowired
+    private AreaService areaService;
+    @Autowired
+    private DeviceService deviceService;
 
 
     /**
@@ -32,14 +42,28 @@ public class DeviceCountController {
     }
 
     /**
-     * 根据地区或学校查询设备运行情况
-
-    @RequestMapping("/count.do")
-    public JsonData deviceFunctionCount(String buildType,Integer groupId ){
-        List<DeviceFunctionVO> functionVOS = functionService.deviceFunctionCount(buildType,groupId);
-        return JsonData.createSuccess(functionVOS);
-    }
+     * 根据地区id获取其下有场馆的地区或学校
      */
+    @RequestMapping("/site.do")
+    public JsonData deviceFunctionCount(Integer groupId){
+        List<SiteVO> site = functionService.site(groupId);
+        return JsonData.createSuccess(site);
+    }
+
+    /**
+     * 根据场馆id获取该场馆内所有设备运行情况并按开机时间降序排序，如果开机时间相同则按参与人次降序排序
+     */
+    @RequestMapping("/devicefunction.do")
+    public JsonData devicefunction(Integer groupId){
+        List<DeviceFunctionBase> bases = new ArrayList<>();
+        List<Device> deviceList = deviceService.findByGroupId(groupId);
+        for(Device device : deviceList){
+            DeviceFunctionBase deviceFunctionBase = functionService.findByDeviceCode(device.getDeviceCode());
+            bases.add(deviceFunctionBase);
+        }
+        return JsonData.createSuccess(bases);
+    }
+
 
 
 

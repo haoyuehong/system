@@ -13,6 +13,7 @@ import system.dao.AreaMapper;
 import system.dao.DeviceMapper;
 import system.dao.SchoolMapper;
 import system.dto.DeviceNumCount;
+import system.dto.DevicePositionVO;
 import system.enums.BuildAreaEnum;
 import system.model.Area;
 import system.model.Device;
@@ -247,6 +248,21 @@ public class DeviceService {
         }else{
             return 0;
         }
+    }
+
+    /**
+     * 根据地区查询设备位置
+     */
+    public List<DevicePositionVO> position(Integer areaId){
+        List<Integer> list = areaService.getSonAreaIds(areaId);
+        return deviceMapper.findPositionByGroupIds(list);
+    }
+
+    /**
+     * 根据设备groupId查询设备
+     */
+    public List<Device> findByGroupId(Integer groupId){
+        return deviceMapper.findByGroupId(groupId);
     }
 
 
