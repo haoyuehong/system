@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @Description:
  * @Date: create in 11:06 2018/3/14
  */
-public class DeviceListParam extends PageNo implements Serializable{
+public class DeviceParam extends PageNo implements Serializable{
     @NotNull
     private Integer groupId;
 

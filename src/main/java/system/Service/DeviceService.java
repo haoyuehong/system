@@ -18,7 +18,7 @@ import system.enums.BuildAreaEnum;
 import system.model.Area;
 import system.model.Device;
 import system.model.School;
-import system.param.DeviceListParam;
+import system.param.DeviceParam;
 import system.utils.CodeGetter;
 import system.utils.ExcelUtil;
 import system.utils.LatLngUtils;
@@ -57,13 +57,13 @@ public class DeviceService {
     /**
      *获取设备列表
      */
-    public PageInfo<Device> getAll(DeviceListParam deviceListParam){
-        PageHelper.startPage(deviceListParam.getPage(),deviceListParam.getRows());
+    public PageInfo<Device> getAll(DeviceParam deviceParam){
+        PageHelper.startPage(deviceParam.getPage(), deviceParam.getRows());
         List< Device> deviceList;
-        if(deviceListParam.getBuildArea().equals(BuildAreaEnum.SCHOOL.getType())){
-            deviceList = deviceMapper.findList(deviceListParam);
+        if(deviceParam.getBuildArea().equals(BuildAreaEnum.SCHOOL.getType())){
+            deviceList = deviceMapper.findList(deviceParam);
         }else{
-            Integer groupId = deviceListParam.getGroupId();
+            Integer groupId = deviceParam.getGroupId();
             /*//查询该地区的子地区id和学校id
             List<Integer> sonAreaIds = areaMapper.findSonArea(groupId);
             sonAreaIds.add(groupId);
@@ -71,7 +71,7 @@ public class DeviceService {
             List<Integer> schoolIds = schoolMapper.findByAreaIds(sonAreaIds);
             sonAreaIds.addAll(schoolIds);*/
             List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
-            deviceList = deviceMapper.findByGroupIds(deviceListParam,sonAreaIds);
+            deviceList = deviceMapper.findByGroupIds(deviceParam,sonAreaIds);
         }
 
         return new PageInfo<>(deviceList);

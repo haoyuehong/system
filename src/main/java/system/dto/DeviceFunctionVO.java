@@ -12,6 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class DeviceFunctionVO extends DeviceFunctionBase{
+    private Integer id;
     /**设备码**/
     private String deviceCode;
     /**设备安装地址**/

@@ -160,20 +160,20 @@
   </update>
 
   <select id="findList" parameterType="system.model.Device" resultMap="BaseResultMap">
-    <if test="deviceListParam != null">
+    <if test="deviceParam != null">
       SELECT <include refid="Base_Column_List" />
       FROM device
       WHERE 1=1
-      <if test="deviceListParam.groupId != null">
-        AND group_id = #{deviceListParam.groupId}
+      <if test="deviceParam.groupId != null">
+        AND group_id = #{deviceParam.groupId}
       </if>
 
-      <if test="deviceListParam.deviceName != null and deviceListParam.deviceName != '' ">
-        AND device_name LIKE CONCAT ("%",#{deviceListParam.deviceName},"%")
+      <if test="deviceParam.deviceName != null and deviceParam.deviceName != '' ">
+        AND device_name LIKE CONCAT ("%",#{deviceParam.deviceName},"%")
       </if>
 
-      <if test="deviceListParam.deviceAddress != null and deviceListParam.deviceAddress != '' ">
-        AND device_address LIKE CONCAT ("%",#{deviceListParam.deviceAddress},"%")
+      <if test="deviceParam.deviceAddress != null and deviceParam.deviceAddress != '' ">
+        AND device_address LIKE CONCAT ("%",#{deviceParam.deviceAddress},"%")
       </if>
     </if>
   </select>
@@ -188,13 +188,13 @@
         #{item}
       </foreach>
 
-      <if test="deviceListParam != null">
-        <if test="deviceListParam.deviceName != null and deviceListParam.deviceName != '' ">
-          AND device_name LIKE CONCAT ("%",#{deviceListParam.deviceName},"%")
+      <if test="deviceParam != null">
+        <if test="deviceParam.deviceName != null and deviceParam.deviceName != '' ">
+          AND device_name LIKE CONCAT ("%",#{deviceParam.deviceName},"%")
         </if>
 
-        <if test="deviceListParam.deviceAddress != null and deviceListParam.deviceAddress != '' ">
-          AND device_address LIKE CONCAT ("%",#{deviceListParam.deviceAddress},"%")
+        <if test="deviceParam.deviceAddress != null and deviceParam.deviceAddress != '' ">
+          AND device_address LIKE CONCAT ("%",#{deviceParam.deviceAddress},"%")
         </if>
       </if>
 

@@ -12,7 +12,7 @@ import system.common.JsonData;
 import system.dto.DeviceNumCount;
 import system.dto.DevicePositionVO;
 import system.model.Device;
-import system.param.DeviceListParam;
+import system.param.DeviceParam;
 import system.utils.BeanValidator;
 import system.utils.CodeGetter;
 import system.utils.LatLngUtils;
@@ -72,7 +72,7 @@ public class DeviceController {
      */
     @RequestMapping("/list.do")
     @ResponseBody
-    public JsonData list(DeviceListParam param){
+    public JsonData list(DeviceParam param){
         BeanValidator.check(param);
         PageInfo<Device> pageInfo = deviceService.getAll(param);
         return JsonData.createSuccess(pageInfo);

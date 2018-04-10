@@ -13,6 +13,7 @@ import system.dto.SiteVO;
 import system.enums.BuildAreaEnum;
 import system.model.Area;
 import system.model.Device;
+import system.model.DeviceFunction;
 import system.model.School;
 
 import java.util.ArrayList;
@@ -58,7 +59,11 @@ public class DeviceFunctionService {
         return siteVOS;
     }
 
+    public void updateDevRun(DeviceFunction function){
+        deviceFunctionMapper.updateByPrimaryKeySelective(function);
+    }
 
-
-
+    public void save(DeviceFunction function){
+        deviceFunctionMapper.insertSelective(function);
+    }
 }
