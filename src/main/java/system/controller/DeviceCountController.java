@@ -63,9 +63,4 @@ public class DeviceCountController {
         }
         return JsonData.createSuccess(bases);
     }
-
-
-
-
-
 }
