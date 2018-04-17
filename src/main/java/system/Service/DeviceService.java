@@ -190,6 +190,7 @@ public class DeviceService {
         }
     }
 
+
     public List<DeviceNumCount> deviceNumRang(Integer areaId){
         List<DeviceNumCount> list = Lists.newArrayList();
         Area area = areaService.findByAreaId(areaId);
