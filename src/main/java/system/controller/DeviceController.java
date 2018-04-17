@@ -50,7 +50,6 @@ public class DeviceController {
         BeanValidator.check(device);
         device.setBuildTime(new Date());
         JsonData jsonData = LatLngUtils.getLatAndLngByAddress(device.getDeviceAddress());
-
         if(jsonData.getStatus()  == 1){
             Map<String,BigDecimal> map = (Map<String,BigDecimal>)jsonData.getData();
             BigDecimal lng = map.get("lng");
@@ -58,6 +57,7 @@ public class DeviceController {
             device.setDeviceLatitude(lng+","+lat);
         }
         device.setDeviceCode(CodeGetter.codeGet());
+        device.setDeviceMap(false);
         deviceService.add(device);
         return JsonData.createSuccess("添加成功");
     }
@@ -75,7 +75,7 @@ public class DeviceController {
     /**
      * 查询设备
      */
-    @RequestMapping("/list.do")
+    @RequestMapping(value = "/list.do",method = RequestMethod.GET)
     @ResponseBody
     public JsonData list(DeviceParam param){
         BeanValidator.check(param);
@@ -86,7 +86,7 @@ public class DeviceController {
     /**
      * 根据地区id获取设备数量排名
      */
-    @RequestMapping("/deviceNumRang.do")
+    @RequestMapping(value = "/deviceNumRang.do",method = RequestMethod.GET)
     @ResponseBody
     public JsonData deviceNumRang(Integer areaId){
         List<DeviceNumCount> deviceNumCounts = deviceService.deviceNumRang(areaId);
@@ -112,11 +112,4 @@ public class DeviceController {
         List<DeviceImage> deviceImages = deviceImageService.findBydeviceCode(deviceCode,imageType);
         return JsonData.createSuccess(deviceImages);
     }
-
-
-
-
-
-
-
 }

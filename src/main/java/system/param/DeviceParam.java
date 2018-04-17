@@ -18,8 +18,6 @@ public class DeviceParam extends PageNo implements Serializable{
     private String deviceName;
 
     private String deviceAddress;
-    @NotBlank
-    private String buildArea;
 
     public Integer getGroupId() {
         return groupId;
@@ -45,11 +43,4 @@ public class DeviceParam extends PageNo implements Serializable{
         this.deviceAddress = deviceAddress;
     }
 
-    public String getBuildArea() {
-        return buildArea;
-    }
-
-    public void setBuildArea(String buildArea) {
-        this.buildArea = buildArea;
-    }
 }

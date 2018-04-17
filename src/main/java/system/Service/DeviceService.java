@@ -60,20 +60,9 @@ public class DeviceService {
     public PageInfo<Device> getAll(DeviceParam deviceParam){
         PageHelper.startPage(deviceParam.getPage(), deviceParam.getRows());
         List< Device> deviceList;
-        if(deviceParam.getBuildArea().equals(BuildAreaEnum.SCHOOL.getType())){
-            deviceList = deviceMapper.findList(deviceParam);
-        }else{
-            Integer groupId = deviceParam.getGroupId();
-            /*//查询该地区的子地区id和学校id
-            List<Integer> sonAreaIds = areaMapper.findSonArea(groupId);
-            sonAreaIds.add(groupId);
-            //根据地区id查询管辖学校
-            List<Integer> schoolIds = schoolMapper.findByAreaIds(sonAreaIds);
-            sonAreaIds.addAll(schoolIds);*/
-            List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
-            deviceList = deviceMapper.findByGroupIds(deviceParam,sonAreaIds);
-        }
-
+        Integer groupId = deviceParam.getGroupId();
+        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+        deviceList = deviceMapper.findByGroupIds(deviceParam,sonAreaIds);
         return new PageInfo<>(deviceList);
     }
 
@@ -158,9 +147,9 @@ public class DeviceService {
                             String s = value.get(4);
                             if(StringUtils.isNotBlank(s)){
                                 if(s.replace(" ","").equals("是")){
-                                    device.setDeviceMap((byte) 1);
+                                    device.setDeviceMap(true);
                                 }else{
-                                    device.setDeviceMap((byte)0);
+                                    device.setDeviceMap(false);
                                 }
                             }else{
                                 log.error("【设备导入】第"+entry.getKey()+"行是否在地图上显示为空");
@@ -204,7 +193,7 @@ public class DeviceService {
     public List<DeviceNumCount> deviceNumRang(Integer areaId){
         List<DeviceNumCount> list = Lists.newArrayList();
         Area area = areaService.findByAreaId(areaId);
-        if(area.getArealevel() > 3){
+        if(area.getArealevel() < 3){
             //根据地区id查询其子地区
             List<Area> areaList = areaService.findSonAreaByAreaId(areaId);
             for(Area sonArea : areaList){
