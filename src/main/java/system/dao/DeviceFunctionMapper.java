@@ -1,6 +1,7 @@
 package system.dao;
 
 import org.apache.ibatis.annotations.Param;
+import system.dto.DeviceFunctionBase;
 import system.dto.DeviceFunctionVO;
 import system.model.DeviceFunction;
 
@@ -69,4 +70,6 @@ public interface DeviceFunctionMapper {
      * 根据地区id获取当地设备的运行状态
      */
     List<DeviceFunctionVO> deviceFunctionCountByAreaId(@Param("groupId")Integer groupId);
+
+    DeviceFunctionBase findFunctionBaseByDeviceCode(@Param("deviceCode")String deviceCode);
 }

@@ -199,7 +199,7 @@ public class DeviceService {
             List<Area> areaList = areaService.findSonAreaByAreaId(areaId);
             for(Area sonArea : areaList){
                 //根据地区id统计设备数量
-                Integer deviceNum = countDeviceNum(sonArea.getId());
+                Integer deviceNum = countDeviceNum(sonArea.getAreaid());
                 if(deviceNum>0){
                     DeviceNumCount deviceNumCount = new DeviceNumCount();
                     deviceNumCount.setAreaName(sonArea.getArea());

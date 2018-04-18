@@ -39,6 +39,10 @@ public class DeviceFunctionService {
         return deviceFunctionMapper.findByDeviceCode(deviceCode);
     }
 
+    public DeviceFunctionBase findFunctionBaseByDeviceCode(String deviceCode){
+        return deviceFunctionMapper.findFunctionBaseByDeviceCode(deviceCode);
+    }
+
     public List<SiteVO> site(Integer groupId){
         List<SiteVO> siteVOS = new ArrayList<>();
         List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
@@ -54,6 +58,7 @@ public class DeviceFunctionService {
                     Area area = areaService.findByAreaId(devGroupId);
                     siteVO.setSiteName(area.getArea());
                 }
+                siteVOS.add(siteVO);
             }
         }
         return siteVOS;

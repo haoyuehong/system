@@ -247,6 +247,7 @@
     <foreach close=")" collection="groupIds" item="item" open="(" separator=",">
       #{item}
     </foreach>
+    AND device_map = 1
   </select>
 
   <select id="findByGroupId" resultMap="BaseResultMap">

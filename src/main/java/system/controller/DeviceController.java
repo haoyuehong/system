@@ -96,7 +96,7 @@ public class DeviceController {
     /**
      * 根据地区id或学校id查询设备位置返回设备所在位置经纬度
      */
-    @RequestMapping("/position.do")
+    @RequestMapping(value = "/position.do",method = RequestMethod.GET)
     @ResponseBody
     public JsonData position(Integer areaId){
         List<DevicePositionVO> position = deviceService.position(areaId);
@@ -106,9 +106,12 @@ public class DeviceController {
     /**
      * 根据设备码和图片类型获取设备图片
      */
-    @RequestMapping("/devImage")
+    @RequestMapping(value = "/devImage.do",method = RequestMethod.GET)
     @ResponseBody
     public JsonData image(Integer deviceCode,Integer imageType){
+        if(imageType == null){
+            imageType = 4;
+        }
         List<DeviceImage> deviceImages = deviceImageService.findBydeviceCode(deviceCode,imageType);
         return JsonData.createSuccess(deviceImages);
     }

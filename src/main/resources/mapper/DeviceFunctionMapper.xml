@@ -177,7 +177,18 @@
     SELECT d.device_name AS  deviceName, d.device_address AS deviceAddress,
            d.build_time AS buildTime,df.real_num AS realNum, df.hstory_num AS hstoryNum,
            df.cur_num AS curNum,df.on_time AS onTime,df.this_duration AS thisDuration,
-           df.total_duration AS totalDuration, df.last_upload_time AS lastUploadTime
+           df.total_duration AS totalDuration, df.last_upload_time AS lastUploadTime,
+           d.device_image AS deviceImage, d.device_status AS deviceStatus
+    FROM device_function df, device d
+    WHERE df.device_code = d.device_code AND d.device_code = #{deviceCode}
+    ORDER BY  totalDuration DESC,hstoryNum DESC
+  </select>
+
+
+  <!--根据设备码查询设备运行情况-->
+  <select id="findFunctionBaseByDeviceCode" resultType="system.dto.DeviceFunctionBase">
+    SELECT d.device_name AS  deviceName, df.hstory_num AS hstoryNum,
+    df.total_duration AS totalDuration
     FROM device_function df, device d
     WHERE df.device_code = d.device_code AND d.device_code = #{deviceCode}
     ORDER BY  totalDuration DESC,hstoryNum DESC

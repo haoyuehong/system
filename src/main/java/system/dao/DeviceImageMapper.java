@@ -1,5 +1,6 @@
 package system.dao;
 
+import org.apache.ibatis.annotations.Param;
 import system.model.DeviceImage;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public interface DeviceImageMapper {
     /**
      * 根据设备码和图片类型获取图片
      */
-    List<DeviceImage> findBydeviceCode(Integer deviceCode, Integer imageType);
+    List<DeviceImage> findBydeviceCode(@Param("deviceCode") Integer deviceCode, @Param("imageType") Integer imageType);
 
 
 }

@@ -1,7 +1,10 @@
 package system.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * @Author: mol
@@ -15,4 +18,7 @@ public class SiteVO {
     private String siteName;
 
     private Integer groupId;
+
+    @JsonProperty("children")
+    List<DeviceFunctionBase> deviceFunctionBases;
 }

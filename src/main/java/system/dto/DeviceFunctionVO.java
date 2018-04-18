@@ -29,6 +29,10 @@ public class DeviceFunctionVO extends DeviceFunctionBase{
     private Integer thisDuration;
     /**最后上传时间**/
     private Date lastUploadTime;
+    /**开关机状态**/
+    private Boolean deviceStatus;
+    /**是否有图片上传**/
+    private Boolean deviceImage;
 
 
 }

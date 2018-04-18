@@ -130,6 +130,8 @@
     <if test="deviceCode != null">
       AND device_code = #{deviceCode}
     </if>
-    <if test=""></if>
+    <if test="imageType != null">
+      AND image_type = #{imageType}
+    </if>
   </select>
 </mapper>
