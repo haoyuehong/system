@@ -3,6 +3,8 @@ package system.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @Author: mol
  * @Description:
@@ -15,4 +17,7 @@ public class DevicePositionVO {
     private String deviceCode;
     /**设备经纬度**/
     private String lnglat;
+
+    /**经纬度***/
+    private List<String> lnglats;
 }

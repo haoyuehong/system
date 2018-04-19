@@ -245,7 +245,17 @@ public class DeviceService {
      */
     public List<DevicePositionVO> position(Integer areaId){
         List<Integer> list = areaService.getSonAreaIds(areaId);
-        return deviceMapper.findPositionByGroupIds(list);
+        List<DevicePositionVO> positionByGroupIds = deviceMapper.findPositionByGroupIds(list);
+        for(DevicePositionVO devicePositionVO : positionByGroupIds){
+            String lnglat = devicePositionVO.getLnglat();
+            String lng = lnglat.substring(0,lnglat.indexOf(","));
+            String lat = lnglat.substring(lnglat.indexOf(",")+1);
+            List<String> list1 = Lists.newArrayList();
+            list1.add(lng);
+            list1.add(lat);
+            devicePositionVO.setLnglats(list1);
+        }
+        return positionByGroupIds;
     }
 
     /**

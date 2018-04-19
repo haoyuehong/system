@@ -22,6 +22,7 @@ public class DeviceFunctionMapperTest {
     @Autowired
     private DeviceFunctionMapper deviceFunctionMapper;
 
+
     @Test
     public void findByDeviceCode() {
         DeviceFunctionVO functionVO = deviceFunctionMapper.findByDeviceCode("201832624127");
