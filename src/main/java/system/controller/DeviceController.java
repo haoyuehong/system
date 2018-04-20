@@ -98,8 +98,8 @@ public class DeviceController {
      */
     @RequestMapping(value = "/position.do",method = RequestMethod.GET)
     @ResponseBody
-    public JsonData position(Integer areaId){
-        List<DevicePositionVO> position = deviceService.position(areaId);
+    public JsonData position(Integer areaId,Integer level){
+        List<DevicePositionVO> position = deviceService.position(areaId,level);
         return JsonData.createSuccess(position);
     }
 

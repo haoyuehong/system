@@ -14,6 +14,8 @@ import java.io.Serializable;
 public class DeviceParam extends PageNo implements Serializable{
     @NotNull
     private Integer groupId;
+    @NotNull
+    private Integer level;
 
     private String deviceName;
 
@@ -43,4 +45,11 @@ public class DeviceParam extends PageNo implements Serializable{
         this.deviceAddress = deviceAddress;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 }

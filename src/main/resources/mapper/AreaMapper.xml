@@ -135,10 +135,7 @@
 			FROM
 				area
 			WHERE
-				FIND_IN_SET(
-					area.areaid,
-					getChildrenOrg (#{areaId})
-				)
+				areaid LIKE CONCAT('${areaId}','%')
   </select>
 
   <select id="findByParentId" resultType="system.model.Area">

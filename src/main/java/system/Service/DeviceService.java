@@ -24,6 +24,7 @@ import system.utils.ExcelUtil;
 import system.utils.LatLngUtils;
 
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * @Author: mol
@@ -61,7 +62,8 @@ public class DeviceService {
         PageHelper.startPage(deviceParam.getPage(), deviceParam.getRows());
         List< Device> deviceList;
         Integer groupId = deviceParam.getGroupId();
-        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+        Integer level = deviceParam.getLevel();
+        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId, level);
         deviceList = deviceMapper.findByGroupIds(deviceParam,sonAreaIds);
         return new PageInfo<>(deviceList);
     }
@@ -198,8 +200,15 @@ public class DeviceService {
             //根据地区id查询其子地区
             List<Area> areaList = areaService.findSonAreaByAreaId(areaId);
             for(Area sonArea : areaList){
+                Integer level;
+                if(sonArea.getArealevel()==1){
+                    level = 2;
+                }else{
+                    level = 4;
+                }
+
                 //根据地区id统计设备数量
-                Integer deviceNum = countDeviceNum(sonArea.getAreaid());
+                Integer deviceNum = countDeviceNum(sonArea.getAreaid(),level);
                 if(deviceNum>0){
                     DeviceNumCount deviceNumCount = new DeviceNumCount();
                     deviceNumCount.setAreaName(sonArea.getArea());
@@ -229,9 +238,9 @@ public class DeviceService {
      * @param groupId
      * @return
      */
-    public Integer countDeviceNum(Integer groupId){
+    public Integer countDeviceNum(Integer groupId,Integer level){
         //根据地区id查询其子地区及学校
-        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId,level);
         //统计这些学校的设备
         if(sonAreaIds.size()>0){
             return deviceMapper.countNumByAreaIds(sonAreaIds);
@@ -243,8 +252,8 @@ public class DeviceService {
     /**
      * 根据地区查询设备位置
      */
-    public List<DevicePositionVO> position(Integer areaId){
-        List<Integer> list = areaService.getSonAreaIds(areaId);
+    public List<DevicePositionVO> position(Integer areaId,Integer level){
+        List<Integer> list = areaService.getSonAreaIds(areaId,level);
         List<DevicePositionVO> positionByGroupIds = deviceMapper.findPositionByGroupIds(list);
         for(DevicePositionVO devicePositionVO : positionByGroupIds){
             String lnglat = devicePositionVO.getLnglat();

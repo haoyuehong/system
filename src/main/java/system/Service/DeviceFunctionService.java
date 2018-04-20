@@ -43,9 +43,9 @@ public class DeviceFunctionService {
         return deviceFunctionMapper.findFunctionBaseByDeviceCode(deviceCode);
     }
 
-    public List<SiteVO> site(Integer groupId){
+    public List<SiteVO> site(Integer groupId,Integer level){
         List<SiteVO> siteVOS = new ArrayList<>();
-        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId);
+        List<Integer> sonAreaIds = areaService.getSonAreaIds(groupId,level);
         for(Integer devGroupId : sonAreaIds){
             List<Device> list = deviceMapper.findByGroupId(devGroupId);
             if(list.size() > 0){

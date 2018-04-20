@@ -24,9 +24,10 @@ public class AreaService {
     /**
      * 根据地区id获取其子地区及学校id
      */
-    public List<Integer> getSonAreaIds(Integer groupId){
+    public List<Integer> getSonAreaIds(Integer groupId,Integer level){
+        Integer areaIdPre = Integer.parseInt(groupId.toString().substring(level));
         //查询该地区的子地区id和学校id
-        List<Integer> sonAreaIds = areaMapper.findSonArea(groupId);
+        List<Integer> sonAreaIds = areaMapper.findSonArea(areaIdPre);
         sonAreaIds.add(groupId);
         //根据地区id查询管辖学校
         List<Integer> schoolIds = schoolMapper.findByAreaIds(sonAreaIds);

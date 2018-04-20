@@ -46,8 +46,8 @@ public class DeviceCountController {
      * 根据地区id获取其下有场馆的地区或学校并获取该场馆内所有设备运行情况并按开机时间降序排序，如果开机时间相同则按参与人次降序排序
      */
     @RequestMapping("/site.do")
-    public JsonData deviceFunctionCount(Integer groupId){
-        List<SiteVO> site = functionService.site(groupId);
+    public JsonData deviceFunctionCount(Integer groupId,Integer level){
+        List<SiteVO> site = functionService.site(groupId,level);
         /*for(SiteVO siteVO : site){
             List<DeviceFunctionBase> bases = new ArrayList<>();
             List<Device> deviceList = deviceService.findByGroupId(siteVO.getGroupId());
